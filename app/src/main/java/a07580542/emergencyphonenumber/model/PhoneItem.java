@@ -16,4 +16,9 @@ public class PhoneItem {
         this.number = number;
         this.picture = picture;
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }
