@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class PhonedbHelper extends SQLiteOpenHelper{
     private static final String db_name="phone.db";
-    private static final int db_ver=1;
+    private static final int db_ver=2;
 
     public static String getTb_name() {
         return tb_name;
@@ -72,6 +72,7 @@ public class PhonedbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int old_version, int new_version) {
-
+        db.execSQL("drop table if exists "+ getTb_name());
+        onCreate(db);
     }
 }
