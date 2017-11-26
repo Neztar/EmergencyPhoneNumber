@@ -14,6 +14,26 @@ public class PhonedbHelper extends SQLiteOpenHelper{
     private static final String db_name="phone.db";
     private static final int db_ver=1;
 
+    public static String getTb_name() {
+        return tb_name;
+    }
+
+    public static String getCol_id() {
+        return col_id;
+    }
+
+    public static String getCol_title() {
+        return col_title;
+    }
+
+    public static String getCol_number() {
+        return col_number;
+    }
+
+    public static String getCol_picture() {
+        return col_picture;
+    }
+
     private static final String tb_name="phone_number";
     private static final String col_id="_id";
     private static final String col_title="title";
