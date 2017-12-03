@@ -1,11 +1,13 @@
 package a07580542.emergencyphonenumber;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -50,6 +52,38 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel : "+phone_number));
                 startActivity(intent);
+            }
+        });
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                String[] item = new String[]{"แก้ไขข้อมูล","ลบข้อมูล"};
+                dialog.setItems(item, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(i==0){
+                            PhoneItem item = phoneitemslist.get(position);
+                            int phoneid = item.id;
+
+                            ContentValues cv = new ContentValues();
+                            cv.put(PhonedbHelper.getCol_number(),"12345");
+
+                            sqldb.update(PhonedbHelper.getTb_name(),cv,PhonedbHelper.getCol_id()+"=?",new String[]{String.valueOf(phoneid)});
+                            loadDatafromDB();
+                            adapter.notifyDataSetChanged();
+                        }else if(i==1){
+                            PhoneItem item = phoneitemslist.get(position);
+                            int phoneid = item.id;
+                            String phoneimg = item.picture;
+                            sqldb.delete(PhonedbHelper.getTb_name(),PhonedbHelper.getCol_id()+"=? AND "+PhonedbHelper.getCol_picture()+"=?",new String[]{String.valueOf(phoneid),phoneimg});
+                            loadDatafromDB();
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+                dialog.show();
+                return true;
             }
         });
 //        Button insert_b = findViewById(R.id.insert_button);
