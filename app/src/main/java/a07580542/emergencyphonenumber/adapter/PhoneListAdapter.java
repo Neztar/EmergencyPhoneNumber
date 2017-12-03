@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
@@ -49,6 +50,9 @@ public class PhoneListAdapter extends ArrayAdapter<PhoneItem> {
         TextView phonenumbertv = itemlayout.findViewById(R.id.phonenumbertextview);
         phonetitletv.setText(item.title);
         phonenumbertv.setText(item.number);
+
+        String imgfilename = item.picture;
+
         AssetManager asset = context.getAssets();
         try {
             InputStream ip = asset.open(item.picture);
@@ -56,6 +60,9 @@ public class PhoneListAdapter extends ArrayAdapter<PhoneItem> {
             phoneiv.setImageDrawable(drawble);
         } catch (IOException e) {
             e.printStackTrace();
+            File imgfile = new File(context.getFilesDir(),imgfilename);
+            Drawable drawable = Drawable.createFromPath(imgfile.getAbsolutePath());
+            phoneiv.setImageDrawable(drawable);
         }
         return itemlayout;
     }

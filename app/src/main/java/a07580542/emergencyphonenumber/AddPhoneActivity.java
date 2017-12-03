@@ -60,13 +60,13 @@ public class AddPhoneActivity extends AppCompatActivity implements View.OnClickL
              e.printStackTrace();
              return;
          }
-         if(saveDatatoDB()){
-             finish();
-         }else{return;}
+         saveDatatoDB();
+         setResult(RESULT_OK);
+         finish();
      }
     }
 
-    private boolean saveDatatoDB() {
+    private void saveDatatoDB() {
         String phoneTitle = phonetitle.getText().toString();
         String phoneNumber = phonenumber.getText().toString();
         String imgfilename = img_selected.getName();
@@ -80,9 +80,7 @@ public class AddPhoneActivity extends AppCompatActivity implements View.OnClickL
         long result = sqldb.insert(PhonedbHelper.getTb_name(),null,cv);
         if(result==-1){
             Toast.makeText(this, "Error!!!!!!!!!!!!!!", Toast.LENGTH_LONG).show();
-            return false;
         }
-        return true;
     }
 
     @Override

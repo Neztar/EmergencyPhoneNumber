@@ -52,36 +52,47 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button insert_b = findViewById(R.id.insert_button);
-        insert_b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText phone_title = findViewById(R.id.phone_title_edittext);
-                EditText phone_number = findViewById(R.id.phone_number_edittext);
-                //เพิ่มตรวจสอบ input
-                String phonetitle = phone_title.getText().toString();
-                String phonenumber = phone_number.getText().toString();
-
-                ContentValues cv = new ContentValues();
-                cv.put(PhonedbHelper.getCol_title(),phonetitle);
-                cv.put(PhonedbHelper.getCol_number(),phonenumber);
-                cv.put(PhonedbHelper.getCol_picture(),"ic_launcher.png");
-                sqldb.insert(PhonedbHelper.getTb_name(),null,cv);
-                loadDatafromDB();
-                adapter.notifyDataSetChanged();
-            }
-        });
+//        Button insert_b = findViewById(R.id.insert_button);
+//        insert_b.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                EditText phone_title = findViewById(R.id.phone_title_edittext);
+//                EditText phone_number = findViewById(R.id.phone_number_edittext);
+//                //เพิ่มตรวจสอบ input
+//                String phonetitle = phone_title.getText().toString();
+//                String phonenumber = phone_number.getText().toString();
+//
+//                ContentValues cv = new ContentValues();
+//                cv.put(PhonedbHelper.getCol_title(),phonetitle);
+//                cv.put(PhonedbHelper.getCol_number(),phonenumber);
+//                cv.put(PhonedbHelper.getCol_picture(),"ic_launcher.png");
+//                sqldb.insert(PhonedbHelper.getTb_name(),null,cv);
+//                loadDatafromDB();
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,AddPhoneActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,123);
             }
         });
 
     }//End OnCreate
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==123){
+            if(resultCode==RESULT_OK){
+                loadDatafromDB();
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
 
     private void loadDatafromDB() {
         Cursor cursor = sqldb.query(PhonedbHelper.getTb_name(),null,null,null,null,null,null);
